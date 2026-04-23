@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Para mi Onejita ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+/* CARTA */
+.card {
+    background: rgba(255,255,255,0.95);
+    padding: 30px;
+    border-radius: 20px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    animation: fadeIn 2s ease;
+    z-index: 2;
+}
+
+.card h1 {
+    color: #e91e63;
+}
+
+.card p {
+    color: #444;
+    font-size: 1.1em;
+}
+
+/* BOTÓN */
+button {
+    margin-top: 15px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background: #e91e63;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #c2185b;
+}
+
+/* TEXTO OCULTO */
+.hidden {
+    display: none;
+    margin-top: 15px;
+    animation: fadeIn 2s ease;
+}
+
+/* ANIMACIONES */
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.9);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+/* ROSAS */
+.rose {
+    position: absolute;
+    font-size: 24px;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-100px); opacity: 1; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+/* CORAZONES */
+.heart {
+    position: absolute;
+    color: red;
+    font-size: 20px;
+    animation: floatUp 4s linear infinite;
+}
+
+@keyframes floatUp {
+    0% { transform: translateY(0); opacity: 1; }
+    100% { transform: translateY(-100vh); opacity: 0; }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>🌹 Feliz Día del Libro 🌹</h1>
+    <p>Estas son las rosas que trae tu caballero 💖</p>
+    
+    <button onclick="mostrar()">Ábrelo 💌</button>
+
+    <div class="hidden" id="mensaje">
+        <p>
+            Mi Onejita 🐰❤️<br><br>
+            Hoy no solo es un día bonito, también es especial porque me recuerda lo mucho que me encanta verte feliz con las cosas que te gustan… como ese libro <b>Boss de Eva Muños</b> 📖✨<br><br>
+            Ojalá lo estés disfrutando mucho, así como yo disfruto cada momento contigo.<br><br>
+            Eres una historia que quiero leer todos los días, sin saltarme ninguna página 💕<br><br>
+            Te amoo demasiado ❤️🌹
+        </p>
+    </div>
+</div>
+
+<script>
+function mostrar() {
+    document.getElementById("mensaje").style.display = "block";
+}
+
+/* ROSAS */
+function crearRosa() {
+    const rosa = document.createElement("div");
+    rosa.classList.add("rose");
+    rosa.innerHTML = "🌹";
+    rosa.style.left = Math.random() * window.innerWidth + "px";
+    rosa.style.animationDuration = (4 + Math.random() * 4) + "s";
+    document.body.appendChild(rosa);
+
+    setTimeout(() => rosa.remove(), 8000);
+}
+setInterval(crearRosa, 300);
+
+/* CORAZONES */
+function crearCorazon() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * window.innerWidth + "px";
+    heart.style.bottom = "0px";
+    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 6000);
+}
+setInterval(crearCorazon, 500);
+</script>
+
+</body>
+</html>
