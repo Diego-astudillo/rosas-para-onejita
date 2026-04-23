@@ -2,27 +2,34 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Para mi Onejita ❤️</title>
 
 <style>
-body {
+html, body {
     margin: 0;
     padding: 0;
-    height: 100vh;
+    height: 100%;
+    overflow: hidden; /* 🔥 evita scroll */
+}
+
+body {
+    padding: 20px;
+    height: 100dvh; /* mejor para móviles */
     background: linear-gradient(135deg, #ffdde1, #ee9ca7);
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
     font-family: 'Segoe UI', sans-serif;
 }
 
 /* CARTA */
 .card {
     background: rgba(255,255,255,0.95);
-    padding: 30px;
+    padding: 25px;
     border-radius: 20px;
-    width: 320px;
+    width: 100%;
+    max-width: 350px;
     text-align: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
     animation: fadeIn 2s ease;
@@ -31,22 +38,24 @@ body {
 
 .card h1 {
     color: #e91e63;
+    font-size: clamp(1.4rem, 4vw, 1.8rem);
 }
 
 .card p {
     color: #444;
-    font-size: 1.1em;
+    font-size: clamp(0.95rem, 3vw, 1.1rem);
+    line-height: 1.5;
 }
 
 /* BOTÓN */
 button {
     margin-top: 15px;
-    padding: 10px 20px;
+    padding: 12px 20px;
     border: none;
-    border-radius: 20px;
+    border-radius: 25px;
     background: #e91e63;
     color: white;
-    font-size: 1em;
+    font-size: clamp(0.9rem, 3vw, 1rem);
     cursor: pointer;
     transition: 0.3s;
 }
@@ -70,29 +79,47 @@ button:hover {
 
 /* ROSAS */
 .rose {
-    position: absolute;
-    font-size: 24px;
+    position: fixed; /* 🔥 clave para que no genere scroll */
+    top: -50px;
+    font-size: clamp(18px, 4vw, 24px);
     animation: fall linear infinite;
+    pointer-events: none;
 }
 
 @keyframes fall {
     0% { transform: translateY(-100px); opacity: 1; }
-    100% { transform: translateY(100vh); opacity: 0; }
+    100% { transform: translateY(110vh); opacity: 0; }
 }
 
 /* CORAZONES */
 .heart {
-    position: absolute;
-    color: red;
-    font-size: 20px;
-    animation: floatUp 4s linear infinite;
+    position: fixed; /* 🔥 evita desbordes */
+    bottom: 0;
+    font-size: clamp(16px, 4vw, 20px);
+    animation: floatUp linear infinite;
+    pointer-events: none;
 }
 
 @keyframes floatUp {
     0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-100vh); opacity: 0; }
+    100% { transform: translateY(-110vh); opacity: 0; }
 }
 
+/* MOBILE */
+@media (max-width: 480px) {
+    body {
+        padding: 10px;
+    }
+
+    .card {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
+}
 </style>
 </head>
 
@@ -107,7 +134,7 @@ button:hover {
     <div class="hidden" id="mensaje">
         <p>
             Mi Onejita 🐰❤️<br><br>
-            Hoy no solo es un día bonito, también es especial porque me recuerda lo mucho que me encanta verte feliz con las cosas que te gustan… como ese libro <b>Boss de Eva Muños</b> 📖✨<br><br>
+            Hoy no solo es un día bonito, también es especial porque me recuerda lo mucho que me encanta verte feliz con las cosas que te gustan… como ese libro <br><b>Boss de Eva Muños</b> 📖✨<br><br>
             Ojalá lo estés disfrutando mucho, así como yo disfruto cada momento contigo.<br><br>
             Eres una historia que quiero leer todos los días, sin saltarme ninguna página 💕<br><br>
             Te amoo demasiado ❤️🌹
@@ -139,7 +166,6 @@ function crearCorazon() {
     heart.classList.add("heart");
     heart.innerHTML = "❤️";
     heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.bottom = "0px";
     heart.style.animationDuration = (3 + Math.random() * 3) + "s";
     document.body.appendChild(heart);
 
