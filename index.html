@@ -1,177 +1,378 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Para mi Onejita ❤️</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Onejita ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
-html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden; /* 🔥 evita scroll */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 body {
-    padding: 20px;
-    height: 100dvh; /* mejor para móviles */
-    background: linear-gradient(135deg, #ffdde1, #ee9ca7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffd9e2, #fff3f5, #fff6ef);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 10px;
 }
 
-/* CARTA */
-.card {
-    background: rgba(255,255,255,0.95);
-    padding: 25px;
-    border-radius: 20px;
-    width: 100%;
-    max-width: 350px;
-    text-align: center;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-    animation: fadeIn 2s ease;
-    z-index: 2;
+#hearts {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
 }
 
-.card h1 {
-    color: #e91e63;
-    font-size: clamp(1.4rem, 4vw, 1.8rem);
-}
-
-.card p {
-    color: #444;
-    font-size: clamp(0.95rem, 3vw, 1.1rem);
-    line-height: 1.5;
-}
-
-/* BOTÓN */
-button {
-    margin-top: 15px;
-    padding: 12px 20px;
-    border: none;
-    border-radius: 25px;
-    background: #e91e63;
-    color: white;
-    font-size: clamp(0.9rem, 3vw, 1rem);
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background: #c2185b;
-}
-
-/* TEXTO OCULTO */
-.hidden {
-    display: none;
-    margin-top: 15px;
-    animation: fadeIn 2s ease;
-}
-
-/* ANIMACIONES */
-@keyframes fadeIn {
-    from {opacity: 0; transform: scale(0.9);}
-    to {opacity: 1; transform: scale(1);}
-}
-
-/* ROSAS */
-.rose {
-    position: fixed; /* 🔥 clave para que no genere scroll */
-    top: -50px;
-    font-size: clamp(18px, 4vw, 24px);
-    animation: fall linear infinite;
-    pointer-events: none;
-}
-
-@keyframes fall {
-    0% { transform: translateY(-100px); opacity: 1; }
-    100% { transform: translateY(110vh); opacity: 0; }
-}
-
-/* CORAZONES */
 .heart {
-    position: fixed; /* 🔥 evita desbordes */
-    bottom: 0;
-    font-size: clamp(16px, 4vw, 20px);
-    animation: floatUp linear infinite;
-    pointer-events: none;
+  position: absolute;
+  color: rgba(255, 105, 135, 0.25);
+  animation: float 8s linear forwards;
 }
 
-@keyframes floatUp {
-    0% { transform: translateY(0); opacity: 1; }
-    100% { transform: translateY(-110vh); opacity: 0; }
+@keyframes float {
+  from { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+  20% { opacity: 1; }
+  to { transform: translateY(-100px) rotate(360deg); opacity: 0; }
 }
 
-/* MOBILE */
-@media (max-width: 480px) {
-    body {
-        padding: 10px;
-    }
+/* Contenedor del Libro - Se aumentó la altura para dar más espacio */
+.book-container {
+  position: relative;
+  width: 100%;
+  max-width: 460px; 
+  height: 650px;
+  max-height: 90vh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+}
 
-    .card {
-        padding: 20px;
-        border-radius: 15px;
-    }
+.book {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
 
-    button {
-        width: 100%;
-    }
+/* Sistema de Páginas Individuales */
+.page {
+  position: absolute;
+  inset: 0;
+  background: #fffaf4;
+  padding: 25px 22px 20px 22px;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 24px;
+  display: none; 
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.08);
+}
+
+/* Página activa en pantalla */
+.page.active {
+  display: flex;
+  animation: slideIn 0.5s ease forwards;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* Estilo para las portadas especiales (Inicio y Cierre) */
+.page.cover {
+  background: linear-gradient(145deg, #d6336c, #ff7b94);
+  color: white;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Caja de contenido con scroll interno si el texto es muy largo */
+.page-content {
+  flex-grow: 1;
+  width: 100%;
+  overflow-y: auto;
+  padding-right: 4px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* Estilo sutil para la barra de scroll interno (solo si llega a aparecer) */
+.page-content::-webkit-scrollbar {
+  width: 4px;
+}
+.page-content::-webkit-scrollbar-thumb {
+  background: rgba(214, 51, 108, 0.2);
+  border-radius: 4px;
+}
+
+h1, h2 {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 700;
+}
+
+h1 { 
+  font-size: clamp(2rem, 6vw, 2.8rem); 
+  margin-bottom: 15px;
+}
+
+h2 {
+  color: #c2185b;
+  font-size: clamp(1.3rem, 5vw, 1.6rem);
+  margin-bottom: 12px;
+  flex-shrink: 0;
+}
+
+p {
+  line-height: 1.45;
+  color: #444;
+  margin-bottom: 10px;
+  font-size: clamp(0.84rem, 2.2vw, 0.94rem);
+}
+
+.page.cover p {
+  color: white;
+}
+
+/* Fila de navegación inferior fija abajo */
+.btn-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding-top: 5px;
+  border-top: 1px solid rgba(0, 0, 0, 0.03);
+  flex-shrink: 0;
+}
+
+.btn-row.only-next {
+  justify-content: flex-end;
+  border-top: none;
+}
+
+.next-btn, .prev-btn {
+  border: none;
+  border-radius: 999px;
+  padding: 10px 24px;
+  cursor: pointer;
+  font-size: .85rem;
+  font-weight: 500;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.next-btn {
+  background: #d6336c;
+  color: white;
+  box-shadow: 0 4px 10px rgba(214, 51, 108, 0.3);
+}
+
+.next-btn:hover {
+  background: #c2185b;
+  transform: scale(1.03);
+}
+
+.prev-btn {
+  background: #e0e0e0;
+  color: #555;
+}
+
+.prev-btn:hover {
+  background: #d5d5d5;
+  transform: scale(1.03);
+}
+
+@media(max-width: 480px) {
+  .book-container {
+    height: 580px;
+    max-height: 88vh;
+  }
+  .page {
+    padding: 20px 18px 15px 18px;
+  }
+  p {
+    line-height: 1.4;
+    margin-bottom: 8px;
+  }
 }
 </style>
 </head>
-
 <body>
 
-<div class="card">
-    <h1>🌹 Feliz Día del Libro 🌹</h1>
-    <p>Estas son las rosas que trae tu caballero 💖</p>
-    
-    <button onclick="mostrar()">Ábrelo 💌</button>
+<div id="hearts"></div>
 
-    <div class="hidden" id="mensaje">
-        <p>
-            Mi Onejita 🐰❤️<br><br>
-            Hoy no solo es un día bonito, también es especial porque me recuerda lo mucho que me encanta verte feliz con las cosas que te gustan… como ese libro <br><b>Boss de Eva Muños</b> 📖✨<br><br>
-            Ojalá lo estés disfrutando mucho, así como yo disfruto cada momento contigo.<br><br>
-            Eres una historia que quiero leer todos los días, sin saltarme ninguna página 💕<br><br>
-            Te amoo demasiado ❤️🌹
-        </p>
+<div class="book-container">
+  <div class="book" id="book">
+
+    <!-- PÁGINA 1: Portada -->
+    <div class="page active cover">
+      <h1>Onejita ❤️</h1>
+      <p>Léelo con tu corazón y siente cada palabra que tengo para ti.</p>
+      <p>Toca el botón para descubrir nuestra historia juntos. ❤️</p>
+      <div class="btn-row only-next">
+        <button class="next-btn" onclick="nextPage()">Abrir libro ❤️</button>
+      </div>
     </div>
+
+    <!-- PÁGINA 2 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Cuando te conocí ❤️</h2>
+        <p>Cuando llegaste a mi vida yo estaba muy destruido, pero cuando te vi, te quería solo para mí. Me comenzaste a gustar desde que prendiste la cámara ese día que nos presentaron y les dije que mañana los veo; la verdad me flechaste con tu carita y tu voz.</p>
+        <p>Te confieso que yo siempre les decía a todos "vamos a almorzar", pero la verdad es que solo quería una excusa para estar mas tiempo al lado tuyo, en la oficina me hacia a tu lado para explicarte pero me quedaba ahi por que me gusta mucho tu compañia. Me acuerdo tanto cuando me mostraste el juego Balatro y nos poníamos a jugar juntos, o cuando te mostré mis bandas de rock favoritas y las escuchábamos, uff... la verdad es que cada recuerdo contigo es único.</p>
+        <p>Cuando estabas muy cerca de mí yo me ponía súper nervioso, pero a nivel dios; si no estoy mal, un día explicándote cosas de trabajo me puse completamente rojo.</p>
+        <p>Y mira, toda, me tienes muy enamorado de ti como el primer día. 💛</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Siguiente ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 3 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Recuerdos MASS ☕</h2>
+        <p>Me acuerdo tanto cuando te hiciste esos mechones monitos y yo te comencé a decir "antenitas" y tú a mí "rulitos", ahí comenzó todo lo nuestro en MASS. La verdad yo siempre te miraba, no sé si te diste cuenta al comienzo, pero ya me habías robado todo el corazón.</p>
+        <p>Cuando siempre íbamos a tomar agua y nos dábamos besos a escondidas, ufff... estar contigo me encantaba demasiado. También cuando te molestaba con tus piernas, amor, o cuando nos dábamos la mano debajo de la mesa en secreto. Amor, en serio me hiciste un amarre muy fuerte porque hasta el día de hoy me siento tan enamorado de ti. 💛</p>
+        <p>Cuando te conté muchas cosas de mí y salimos, ¿te acuerdas? Afuera me abrí más contigo y escuchaste todo lo que te dije. También me contaste tus cosas y me comenzó a gustar mucho tu pensamiento y todo de ti.</p>
+        <p>Recuerdo cuando tenía que ir a Atlantis y me despedí de ti con un beso en la mejilla, me fui muy feliz y me puse rojo. Yo te molestaba mucho por el chat de Teams y te enviaba cosas. Eres mi consentida de MASS.</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Siguiente ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 4 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Nuestros momentos ❤️</h2>
+        <p>Yo siempre te ayudaba en todo y cuando íbamos donde Rami, que comíamos juntos, ufff… me encanta todo de ti.</p>
+        <p>Amor, ¿te acuerdas que en la fiesta nos quedamos mirándonos mientras tomábamos? Ahí fue cuando la gente se dio un poco cuenta que estábamos juntos.</p>
+        <p>Ese beso que te di, amor, la verdad ese día me quería ir contigo, pero habían unos sapos que no nos dejaron.</p>
+        <p>Me encantó todo de ti, amor, y cuando fui por primera vez a Soacha Compartir, te vi vestida y ufff… me fascinaste y me derretí por ti. Nunca te había visto así y me encantasteeee. 💖</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Siguiente ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 5 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Tú y yo 💋</h2>
+        <p>Cada vez que te miraba en MASS fue muy bello y la verdad sigo así cada vez que te veo.</p>
+        <p>Sé que no lo expreso, pero quisiera abrazarte muy fuerte y besarte bien… aunque la verdad se me para 😅. Todo lo que he vivido contigo me ha encantado. ❤️</p>
+        <p>¿Te acuerdas en MASS cuando nos dábamos besos en el ascensor y casi nos pillan? O cuando fuimos a comer la primera vez juntos en un buffet y nos llenaron el plato. También te conté muchas cosas ese día. ❤️</p>
+        <p>Cuando siempre íbamos a la estación de Héroes y nos dábamos muchos besos, a mí nunca me importó la opinión de la gente.</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Siguiente ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 6 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Primeras veces 🌹</h2>
+        <p>Sabes que siempre me pongo muy nervioso contigo, pero desde la primera vez que lo hicimos fue algo tan mágico. Sentí tantas cosas por ti. Quiero que seas la última mujer en mi vida, solo quiero hacértelo a ti todos los días y siempre leer tu cuerpo como mi libro favorito. Siempre estaré contigo en las buenas y en las malas. ❤️</p>
+        <p>Amor, aquí te admito que quisiera hacerlo ya contigo todos los días, porque sí, soy muy sexual y me encanta contigo.</p>
+        <p>Me siento tan bien a tu lado y cuando dormimos juntos la primera vez, uff… las mejores experiencias de mi vida. Jamás olvidaré amanecer con la mujer que más amo en este mundo. 🌹</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Siguiente ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 7 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Compromiso y apoyo 💛</h2>
+        <p>Sabes que tú puedes recostarte en mí todo lo que necesites, ya sea económica, emocional o de cualquier tipo.</p>
+        <p>Dime lo que necesites, que jamás te fallaré, jamás le fallaría a la mujer que más amo.</p>
+        <p>He cometido errores, pero siempre intento ser lo mejor para ti. Quiero seguir creciendo, pero contigo a mi lado. Amor, que un día no vaya mal, pero juntos, apoyándonos siempre. ❤️</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Siguiente ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 8 -->
+    <div class="page">
+      <div class="page-content">
+        <h2>Carta para ti ❤️</h2>
+        <p>Amor, gracias por todo lo que me has ofrecido, por ser una mujer maravillosa.</p>
+        <p>Estoy muy feliz de estar a tu lado. Sé que no siempre he sido el mejor, pero siempre estaré para ti.</p>
+        <p>Quiero vivir muchas cosas a tu lado y lo más importante es que estemos juntos, no importa el lugar. 💛</p>
+        <p>Quiero que estés siempre conmigo, eres única y estoy muy enamorado tuyo. Por ti haría todo lo que me pidas. Te amo, te amooooo ❤️</p>
+      </div>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+        <button class="next-btn" onclick="nextPage()">Última ❤️</button>
+      </div>
+    </div>
+
+    <!-- PÁGINA 9: Contraportada Final -->
+    <div class="page cover">
+      <h1>Siempre Onejita y Osito ❤️</h1>
+      <p>Gracias por leer nuestra historia y lo que nos falta vivir juntos.</p>
+      <p>Cada palabra viene de mi corazón y siempre estaré esperándote.</p>
+      <p>Espero que este pequeño libro te haga sonreír y sentir todo mi amor. 🌹</p>
+      <p>Eres la mujer que más amo en este mundo.🌹</p>
+      <div class="btn-row">
+        <button class="prev-btn" onclick="prevPage()">Atrás ↩</button>
+      </div>
+    </div>
+
+  </div>
 </div>
 
 <script>
-function mostrar() {
-    document.getElementById("mensaje").style.display = "block";
+const pages = document.querySelectorAll('.page');
+let currentPage = 0;
+
+function nextPage() {
+  if (currentPage >= pages.length - 1) return;
+  
+  pages[currentPage].classList.remove('active');
+  currentPage++;
+  pages[currentPage].classList.add('active');
 }
 
-/* ROSAS */
-function crearRosa() {
-    const rosa = document.createElement("div");
-    rosa.classList.add("rose");
-    rosa.innerHTML = "🌹";
-    rosa.style.left = Math.random() * window.innerWidth + "px";
-    rosa.style.animationDuration = (4 + Math.random() * 4) + "s";
-    document.body.appendChild(rosa);
-
-    setTimeout(() => rosa.remove(), 8000);
+function prevPage() {
+  if (currentPage <= 0) return;
+  
+  pages[currentPage].classList.remove('active');
+  currentPage--;
+  pages[currentPage].classList.add('active');
 }
-setInterval(crearRosa, 300);
 
-/* CORAZONES */
-function crearCorazon() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * window.innerWidth + "px";
-    heart.style.animationDuration = (3 + Math.random() * 3) + "s";
-    document.body.appendChild(heart);
-
-    setTimeout(() => heart.remove(), 6000);
+function createHeart() {
+  const heart = document.createElement('div');
+  heart.className = 'heart';
+  heart.innerHTML = '❤';
+  heart.style.left = Math.random() * 100 + 'vw';
+  heart.style.transform = `rotate(${Math.random() * 360}deg)`;
+  heart.style.fontSize = (Math.random() * 18 + 12) + 'px';
+  document.getElementById('hearts').appendChild(heart);
+  setTimeout(() => heart.remove(), 8000);
 }
-setInterval(crearCorazon, 500);
+setInterval(createHeart, 400);
 </script>
 
 </body>
